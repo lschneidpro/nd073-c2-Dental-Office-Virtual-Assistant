@@ -45,8 +45,9 @@ class DentaBot extends ActivityHandler {
             if (LuisResult.luisResult.prediction.topIntent === "GetAvailability" &&
                 LuisResult.intents.GetAvailability.score > .5
             ) {
+                console.log("searching av")
                 // call scheduler api with location entity info
-                const availabilities = this.dentistScheduler.getAvailability();
+                const availabilities = await this.dentistScheduler.getAvailability();
                 console.log(availabilities)
                 await context.sendActivity(availabilities);
                 await next();
@@ -61,7 +62,7 @@ class DentaBot extends ActivityHandler {
             ) {
                 // call scheduler api with location entity info
                 const time = LuisResult.entities.$instance.time[0].text;
-                const responseText = this.dentistScheduler.scheduleAppointment(time);
+                const responseText = await this.dentistScheduler.scheduleAppointment(time);
                 console.log(responseText)
                 await context.sendActivity(responseText);
                 await next();
@@ -74,9 +75,7 @@ class DentaBot extends ActivityHandler {
             }
             else {
                 // If no answers were returned from QnA Maker, reply with help.
-                await context.sendActivity(`I'm not sure I can answer your question`
-                    + 'I can schedule an appointment'
-                    + 'Or you can ask me questions about the dentistry');
+                await context.sendActivity("I'm not sure I can answer your question\n\nI can schedule an appointment\n\n Or you can ask me questions about the dentistry");
             }
 
             await next();
