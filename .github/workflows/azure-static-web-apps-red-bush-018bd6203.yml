@@ -16,7 +16,7 @@ jobs:
     name: Build and Deploy Job
     defaults:
       run:
-        working-directory: ./ContosoDentistryWebsite/
+        working-directory: ./ContosoDentistryWebsite
     steps:
       - uses: actions/checkout@v2
         with:
